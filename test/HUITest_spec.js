@@ -3,7 +3,7 @@
  */
 var setup = require('./../default-setup');
 var pageFile = require('./../users-page');
-var usersPage = new pageFile.usersPage('http://localhost:4001');
+var usersPage = new pageFile.usersPage();
 
 describe('Handle users', function () {
     describe('Users view', function () {
@@ -16,6 +16,22 @@ describe('Handle users', function () {
             return usersPage.navigateToUsersView().then(function () {
                 expect(usersPage.getUserList()).toContain({id: 1, username: 'user1'});
                 expect(usersPage.getMessage()).toEqual("SUCCESS");
+            });
+        });
+
+        it('should send the correct request', function() {
+            return usersPage.navigateToUsersView().then(function () {
+                usersPage.enterNewUserDetails("user1", "user1@email.com");
+                var expectation = setup.mockyeah.post(setup.mockdata.userPost.pattern, setup.mockdata.userPost.ok)
+                    .expect()
+                    .body({
+                        username: 'user1',
+                        email: 'user1@email.com'
+                    })
+                    .once();
+                return usersPage.confirm().then(function () {
+                    expectation.verify();
+                });
             });
         });
 
