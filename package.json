@@ -1,0 +1,29 @@
+{
+  "name": "mockyeah-hui",
+  "version": "0.0.1",
+  "description": "showcasing usage of mockyeah for hui tests",
+  "main": "default-setup.js",
+  "scripts": {
+    "test": "protractor ./protractor.conf.js",
+    "start-mock": "node default-setup.js",
+    "prepare-test": "node node_modules/protractor/bin/webdriver-manager update"
+  },
+  "keywords": [
+    "hermetic",
+    "ui",
+    "testing",
+    "hui",
+    "mockyeah"
+  ],
+  "author": "mathume",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^2.5.2",
+    "jasmine-spec-reporter": "^2.7.0",
+    "mockyeah": "^0.15.1",
+    "protractor": "^4.0.11",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1",
+    "supertest": "^2.0.1"
+  }
+}
