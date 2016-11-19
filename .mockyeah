@@ -1,8 +1,7 @@
 {
   "host": "localhost",
   "port": 4001,
-  "fixturesDir": "./fixtures",
-  "capturesDir": "./mockyeah",
-  "output": true,
-  "verbose": false
+  "output": false,
+  "verbose": false,
+  "journal" : true
 }

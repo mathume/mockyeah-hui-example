@@ -1,11 +1,16 @@
-Sample implementation of mocking backend for rapid frontend development in JavaScript of implementation of [Hermetic User Interface (HUI) tests](https://testing.googleblog.com/2015/03/android-ui-automated-testing.html) with [mockyeah](https://github.com/ryanricard/mockyeah).
+Sample implementation of mocking backend for fast frontend development in JavaScript and guide to [Hermetic User Interface (HUI) testing](https://testing.googleblog.com/2015/03/android-ui-automated-testing.html) with [mockyeah](https://github.com/ryanricard/mockyeah).
 
-# Rapid Frontend Development with JavaScript and HUI tests
+# Fast Frontend Development with JavaScript and HUI testing
 
-## Rapid frontend development
+mockyeah has recently been added new features inspired by [WireMock](http://wiremock.org/).
+The library has the big advantage of allowing you to *re-use* mock data during development for testing.
+
+By mocking the backend there's no immediate need to set up and maintain backend data thus speeding up development.
+
+## Fast frontend development - backend mocking
 
 In order to be independent from a real backend instance during frontend development we'll organize our expected responses and add them to a default setup.
-We'll then configure your frontend to point to the mockyeah instance, run `node default-setup.js`, run your project and develop!
+We'll then configure our frontend to point to the mockyeah instance, start the mock server with the default setup and we're ready to develop our web application!
 
 ### Organizing the mock data
 
@@ -43,6 +48,11 @@ var usersGet = {
 };
 ```
 
+
+#### Collecting mock data
+
+mockyeah has a record-and-play feature that allows it to run as a proxy and save data you want to mock. Have a look at the library's documentation to find out more.
+
 ### Define a default setup
 
 ```
@@ -63,6 +73,8 @@ exports.init_mock = init_mock;
 exports.mockyeah = mockyeah;
 exports.mockdata = mockdata;
 ```
+
+Now we run `node default-setup.js` and have a backend available during development.
 
 ## Hermetic User Interface (HUI) testing
 
@@ -109,21 +121,37 @@ describe('Handle users', function () {
 
 ```
 
-### Request verification
+### Request verification and logging
 
-During test development we'll want to inspect the received requests when something doesn't come out as expected. We can do this by setting
+During test development we'll want to inspect the received requests (the "request journal") when something doesn't come out as expected. We can do this by setting
 
 ```
 {
+    output: true,
     journal: true
 }
 ```
 
-and
-
-TODO: missing code sample
+giving the output
 
 ```
+      ✓ should send the correct request
+[mockyeah][12:31:46][SERVE][MOUNT][GET] /users$/
+[mockyeah][12:31:46][REQUEST][JOURNAL] {
+  "callCount": 1,
+  "url": "/users",
+  "fullUrl": "http://localhost:4001/users",
+  "clientIp": "127.0.0.1",
+  "method": "GET",
+  "headers": {
+    "host": "localhost:4001",
+    "accept": "application/json",
+    "connection": "close"
+  },
+  "query": {},
+  "body": {}
+}
+[mockyeah][12:31:46][REQUEST][GET] /users (2ms)
 
 ```
 
@@ -147,8 +175,6 @@ it('should send the correct request', function() {
 });
 
 ```
-
-## Logging
 
 The standard configuration of mockyeah will write a standard request log which is very helpful during test development.
 
@@ -198,3 +224,7 @@ Spec started
 Executed 3 of 3 specs SUCCESS in 0.062 sec.
 [22:00:00] I/local - Shutting down selenium standalone server.
 ```
+
+## Summary
+
+mockyeah is a very useful and easy-to-use library for frontend development and testing.
